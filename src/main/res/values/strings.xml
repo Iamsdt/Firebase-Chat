@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Firebase Chat Demo</string>
     <string name="action_settings">Settings</string>
+    <string name="dummy_post">This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post This is a simple post</string>
+    <string name="commentTxt">Comment</string>
+    <string name="shareTxt">Share</string>
+    <string name="loveTxt">Love</string>
+    <string name="email_address_label">Email address</string>
+    <string name="password_label">Password</string>
+    <string name="login_label">Login</string>
+    <string name="new_account_label">New here ! Create a new account…</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
