@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <!--login activity -->
+    <color name="loginBcg">@color/orange_500</color>
+    <color name="log_textLabel">@color/deep_orange_700</color>
+    <color name="log_btn">@color/orange_500</color>
+    <color name="log_text">@color/red_500</color>
+
 </resources>

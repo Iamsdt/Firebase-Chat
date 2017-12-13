@@ -1,5 +1,7 @@
 package com.iamsdt.firebasechatdemo.login
 
+import am.appwise.components.ni.NoInternetDialog
+import am.appwise.components.ni.NoInternetUtils
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -28,9 +30,14 @@ class SignupFragment:Fragment(){
             val email = sUp_email_lay.editText?.text.toString()
             val pass = sUp_pass.editText?.text.toString()
             //fixme 12/13/2017 validate before create
-            authUtil.createNewAccount(context,email,pass)
+            if (NoInternetUtils.isConnectedToInternet(context)){
+                authUtil.createNewAccount(context,email,pass)
+            }else{
+                NoInternetDialog.Builder(this).build().showDialog()
+            }
         }
 
         return view
     }
+
 }

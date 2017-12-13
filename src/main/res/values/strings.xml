@@ -8,9 +8,10 @@
     <string name="email_address_label">Email address</string>
     <string name="password_label">Password</string>
     <string name="login_label">Login</string>
-    <string name="new_account_label">New here ! Create a new account…</string>
+    <string name="new_account_label">New here ! Create a new account</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="socialLogin">Or, Sign in using</string>
 </resources>

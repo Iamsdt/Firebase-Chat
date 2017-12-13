@@ -1,15 +1,25 @@
+
 package com.iamsdt.firebasechatdemo.login
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.iamsdt.firebasechatdemo.MainActivity
-import com.iamsdt.firebasechatdemo.utility.Logger
+import timber.log.Timber
+import com.iamsdt.firebasechatdemo.BuildConfig
+import com.iamsdt.firebasechatdemo.LoginActivity
+import com.mobapphome.mahencryptorlib.MAHEncryptor
 
+
+@Suppress("DEPRECATION")
 /**
  * Created by Shudipto Trafder on 12/13/2017.
  * at 12:32 AM
  */
+
 class FirebaseAuthUtil{
 
     private var mAuth:FirebaseAuth ?= null
@@ -18,67 +28,90 @@ class FirebaseAuthUtil{
     private val userEmailKey = "email"
     private val userPassKey = "pass"
 
+    private var mabEncrypt:MAHEncryptor ?= null
+
+    private var dialog:ProgressDialog ?= null
+
     init {
         mAuth = FirebaseAuth.getInstance()
+        mabEncrypt = MAHEncryptor.newInstanceOrRetunNull(BuildConfig.PsswordApiKey)
     }
 
-    fun checkUserData(context: Context):Boolean{
+    fun checkUserData(context: Context){
 
         val user = getUserEmilAndPass(context)
 
         val email = user.getValue(userEmailKey)
-        val pass = user.getValue(userPassKey)
+        var pass = user.getValue(userPassKey)
 
-        if (email.isEmpty() || pass.isEmpty()){
-            return false
+        if (email.isNullOrEmpty() || pass.isNullOrEmpty()){
+            Timber.i("Email or pass empty")
+            return
         }
 
-        return true
+        //debug only 12/13/2017 remove later
+        Timber.i("Email:$email pass:$pass")
+
+        pass = mabEncrypt?.decode(pass)
+
+        login(context,email!!,pass!!)
     }
 
-    private fun getUserEmilAndPass(context: Context):HashMap<String,String>{
+    private fun getUserEmilAndPass(context: Context):HashMap<String?,String?>{
         val sp = context.getSharedPreferences(userKey, Context.MODE_PRIVATE)
         val email = sp.getString(userEmailKey,null)
-        //fixme 12/13/2017 decrypt pass before use
-        val pass = sp.getString(userEmailKey,null)
-        val hasMap = HashMap<String,String>()
+        val pass = sp.getString(userPassKey,null)
+        val hasMap = HashMap<String?,String?>()
         hasMap["email"] = email
         hasMap["pass"] = pass
         return hasMap
     }
 
-    fun login(context: Context, email: String?, pass:String?){
+    fun login(context: Context, email: String, pass:String){
 
-        var userEmail = email
-        var userPass = pass
+        dialog = ProgressDialog(context)
+        dialog?.setMessage("Login...")
 
+        dialog?.show()
 
-        if (userEmail.isNullOrEmpty()||userPass.isNullOrEmpty()){
-            val user = getUserEmilAndPass(context)
-            userEmail = user.getValue(userEmailKey)
-            userPass = user.getValue(userPassKey)
-        }
-
-        mAuth?.signInWithEmailAndPassword(userEmail!!,userPass!!)
+        mAuth?.signInWithEmailAndPassword(email,pass)
                 ?.addOnCompleteListener({
                     task->
                     if (task.isSuccessful){
+                        saveUserToSp(context,email,pass)
                         context.startActivity(Intent(context,MainActivity::class.java))
+
+                        if (dialog!!.isShowing){
+                            dialog?.dismiss()
+                        }
+                        LoginActivity.finishedRequest = true
+                    } else{
+                        Timber.plant(Timber.DebugTree())
+                        Timber.e(task.exception,"Sign in failed")
                     }
                 })
     }
 
     fun createNewAccount(context: Context, email: String, pass:String){
 
+        dialog = ProgressDialog(context)
+        dialog?.setMessage("Creating new account...")
+        dialog?.show()
+
         mAuth?.createUserWithEmailAndPassword(email,pass)
                 ?.addOnCompleteListener({
                     task ->
                     if (task.isSuccessful){
+                        if (dialog!!.isShowing){
+                            dialog?.dismiss()
+                        }
                         val user = mAuth?.currentUser!!
                         saveUserToSp(context,user.email!!,pass)
+                        context.startActivity(Intent(context,MainActivity::class.java))
+                        LoginActivity.finishedRequest = true
                     } else{
-                        Logger.error("User sign up failed",
-                                "user signup",task.exception,true)
+                        Timber.plant(Timber.DebugTree())
+                        Timber.e(task.exception,"Sign in failed")
                     }
                 })
     }
@@ -86,9 +119,13 @@ class FirebaseAuthUtil{
     private fun saveUserToSp(context: Context, email: String, pass:String){
         val sp = context.getSharedPreferences(userKey, Context.MODE_PRIVATE)
         val editor = sp.edit()
+
+        val newPass = mabEncrypt?.encode(pass)
+
         editor.putString(userEmailKey,email)
-        //fixme 12/13/2017 encrypt the password before save
-        editor.putString(userPassKey,pass)
+        //complete 12/13/2017 encrypt the password before save
+        Timber.i(newPass)
+        editor.putString(userPassKey,newPass)
         editor.apply()
     }
 }

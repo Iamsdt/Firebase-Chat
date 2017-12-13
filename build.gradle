@@ -26,7 +26,6 @@ android {
                     'proguard-rules.pro'
         }
 
-
         release {
             minifyEnabled false
             shrinkResources false
@@ -34,6 +33,11 @@ android {
                     'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'PsswordApiKey', '"02b7fb496f99d7fa9be67616bc5665c6";'
+    }
+
 }
 
 
@@ -70,7 +74,16 @@ dependencies {
     implementation "com.android.support:support-vector-drawable:$support_version"
 
     //for settings
-    compile "com.android.support:preference-v14:$support_version"
+    implementation "com.android.support:preference-v14:$support_version"
+
+    //no internet dialog
+    implementation 'am.appwise.components:NoInternetDialog:1.1.1'
+
+    //timber for logger
+    implementation 'com.jakewharton.timber:timber:4.6.0'
+
+    //password encrypt
+    implementation 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
 }
 
 
