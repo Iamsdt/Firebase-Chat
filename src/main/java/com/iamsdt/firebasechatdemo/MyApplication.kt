@@ -2,10 +2,8 @@ package com.iamsdt.firebasechatdemo
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import timber.log.Timber
-import java.util.*
 
 /**
  * Created by Shudipto Trafder on 12/14/2017.

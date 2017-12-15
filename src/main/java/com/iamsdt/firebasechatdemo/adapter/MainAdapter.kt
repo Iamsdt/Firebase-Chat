@@ -1,6 +1,5 @@
 package com.iamsdt.firebasechatdemo.adapter
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +14,16 @@ import timber.log.Timber
  * Created by Shudipto Trafder on 12/14/2017.
  * at 7:48 PM
  */
-class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+class MainAdapter(clickListener: ClickListener):
+        RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
 
     private var dataList: ArrayList<Post>? = null
 
+    private var mClickListener:ClickListener ?= null
+
     init {
         dataList = ArrayList()
+        mClickListener = clickListener
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder?, position: Int) {
@@ -41,16 +44,29 @@ class MainAdapter:RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
     }
 
     fun swapData(list: ArrayList<Post>) {
+
         dataList = list
 
-        if (dataList != null) {
+        if (dataList != null){
+            //notify adapter about data is changed
             notifyDataSetChanged()
+            Timber.i("array list changed")
         }
+
     }
 
     inner class MyViewHolder(itemView: View) :
-            RecyclerView.ViewHolder(itemView) {
+            RecyclerView.ViewHolder(itemView),View.OnClickListener {
 
         val textView:TextView = itemView.dummyItemTv
+
+        init {
+            textView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val post = dataList?.get(adapterPosition)
+            mClickListener?.onItemClick(post)
+        }
     }
 }

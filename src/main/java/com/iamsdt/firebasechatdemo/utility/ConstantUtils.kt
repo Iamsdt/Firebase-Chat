@@ -6,11 +6,8 @@ package com.iamsdt.firebasechatdemo.utility
  */
 class ConstantUtils{
 
-    //all firebase constant
-    object FB{
+    companion object {
         val post = "post"
-        val content = "content"
-        val date = "content"
-
+        val comment = "comment"
     }
 }
