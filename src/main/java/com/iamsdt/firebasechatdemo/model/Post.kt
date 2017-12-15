@@ -6,4 +6,5 @@ package com.iamsdt.firebasechatdemo.model
  */
 data class Post(
         var content: String = "",
-        var date: String = "")
+        var date: String = "",
+        var key: String = "")

@@ -68,16 +68,14 @@ class MainActivity : AppCompatActivity(),
 
     private fun saveData(user: FirebaseUser) {
         val text: String = mainEt.text.toString()
-        val date = Date()
+        val date = SimpleDateFormat("MMM dd, hh:mm a",
+                Locale.ENGLISH).format(Date())
 
         //data pattern May 9, 15:14pm
+        val post = Post(text, date)
 
-        val post = Post(text,
-                SimpleDateFormat("MMM dd, hh:mm a", Locale.ENGLISH).format(date))
-        //data
-
-        dbRef?.child(user.uid)?.child(ConstantUtils.post)?.push()
-                ?.setValue(post)?.addOnCompleteListener({ task ->
+        dbRef?.child(user.uid)?.child(ConstantUtils.post)?.push()?.
+                setValue(post)?.addOnCompleteListener({ task ->
             if (task.isSuccessful) {
                 mainEt.setText("")
                 mainEt.clearFocus()
@@ -97,19 +95,26 @@ class MainActivity : AppCompatActivity(),
 
                     override fun onDataChange(dataSnapshot: DataSnapshot?) {
 
+                        //clear all the data that saved previously
+                        array.clear()
+
                         Timber.i("Data change called")
 
                         for (snapShot in dataSnapshot!!.children) {
-                            val post = snapShot.getValue(Post::class.java)
-                            if (!array.contains(post)) {
-                                array.add(post!!)
-                                Timber.i(post.toString())
+
+                            if (!snapShot.exists()) {
+                                continue
                             }
+
+                            val data = snapShot.getValue(Post::class.java)
+                            val key = snapShot.key
+                            Timber.i(key)
+                            val post = Post(data!!.content, data.date, key)
+                            //add new post data
+                            array.add(post)
+                            Timber.i(post.toString())
                         }
-
-
                     }
-
                 })
 
         mAdapter?.swapData(array)
@@ -168,6 +173,15 @@ class MainActivity : AppCompatActivity(),
 
     override fun onItemClick(post: Post?) {
         val newPost = Post("New Content", post!!.date)
-        val map = mapOf<String, Any>(Pair("", newPost))
+        dbRef?.child(user?.uid)?.child(ConstantUtils.post)
+                ?.child(post.key)?.setValue(newPost)
+                ?.addOnCompleteListener({ task ->
+                    if (task.isSuccessful) {
+                        Timber.i("update")
+                    } else {
+                        Timber.e(task.exception)
+                    }
+                })
+
     }
 }
