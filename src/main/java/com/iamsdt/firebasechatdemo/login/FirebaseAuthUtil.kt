@@ -1,28 +1,23 @@
+@file:Suppress("DEPRECATION")
 
 package com.iamsdt.firebasechatdemo.login
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.iamsdt.firebasechatdemo.MainActivity
-import timber.log.Timber
 import com.iamsdt.firebasechatdemo.BuildConfig
 import com.iamsdt.firebasechatdemo.LoginActivity
+import com.iamsdt.firebasechatdemo.MainActivity
 import com.mobapphome.mahencryptorlib.MAHEncryptor
-
-
-@Suppress("DEPRECATION")
+import timber.log.Timber
 /**
  * Created by Shudipto Trafder on 12/13/2017.
  * at 12:32 AM
  */
 
-class FirebaseAuthUtil{
+class FirebaseAuthUtil(private val mAuth:FirebaseAuth){
 
-    private var mAuth:FirebaseAuth ?= null
 
     private val userKey = "FirebaseUser"
     private val userEmailKey = "email"
@@ -33,7 +28,6 @@ class FirebaseAuthUtil{
     private var dialog:ProgressDialog ?= null
 
     init {
-        mAuth = FirebaseAuth.getInstance()
         mabEncrypt = MAHEncryptor.newInstanceOrRetunNull(BuildConfig.PsswordApiKey)
     }
 
@@ -74,8 +68,8 @@ class FirebaseAuthUtil{
 
         dialog?.show()
 
-        mAuth?.signInWithEmailAndPassword(email,pass)
-                ?.addOnCompleteListener({
+        mAuth.signInWithEmailAndPassword(email,pass)
+                .addOnCompleteListener({
                     task->
                     if (task.isSuccessful){
                         saveUserToSp(context,email,pass)
@@ -98,14 +92,14 @@ class FirebaseAuthUtil{
         dialog?.setMessage("Creating new account...")
         dialog?.show()
 
-        mAuth?.createUserWithEmailAndPassword(email,pass)
-                ?.addOnCompleteListener({
+        mAuth.createUserWithEmailAndPassword(email,pass)
+                .addOnCompleteListener({
                     task ->
                     if (task.isSuccessful){
                         if (dialog!!.isShowing){
                             dialog?.dismiss()
                         }
-                        val user = mAuth?.currentUser!!
+                        val user = mAuth.currentUser!!
                         saveUserToSp(context,user.email!!,pass)
                         context.startActivity(Intent(context,MainActivity::class.java))
                         LoginActivity.finishedRequest = true

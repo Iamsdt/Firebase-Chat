@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.iamsdt.firebasechatdemo.MyApplication
 import com.iamsdt.firebasechatdemo.R
 import kotlinx.android.synthetic.main.signup_fragment.*
 
@@ -17,12 +18,11 @@ import kotlinx.android.synthetic.main.signup_fragment.*
  */
 class SignupFragment:Fragment(){
 
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view = inflater?.inflate(R.layout.signup_fragment,container,false)
 
-        val authUtil = FirebaseAuthUtil()
+        val authUtil = FirebaseAuthUtil(MyApplication().get(activity).mAuth!!)
 
         val btn = view!!.findViewById<Button>(R.id.sUp_btn)
 

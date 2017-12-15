@@ -14,12 +14,11 @@ class LoginActivity : AppCompatActivity() {
     var authUtil:FirebaseAuthUtil ?= null
     var dialog:NoInternetDialog ?= null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        authUtil = FirebaseAuthUtil()
+        authUtil = FirebaseAuthUtil(MyApplication().get(this).mAuth!!)
         dialog = NoInternetDialog.Builder(this).build()
 
         val state = NoInternetUtils.isConnectedToInternet(this@LoginActivity)
