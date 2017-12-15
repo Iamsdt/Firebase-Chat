@@ -14,4 +14,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="socialLogin">Or, Sign in using</string>
+    <string name="write_something">write something</string>
+    <string name="title_activity_create_post">CreatePostActivity</string>
 </resources>

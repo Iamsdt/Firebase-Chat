@@ -1,5 +1,8 @@
 package com.iamsdt.firebasechatdemo
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -8,51 +11,49 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
-import com.iamsdt.firebasechatdemo.adapter.ClickListener
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
-import com.iamsdt.firebasechatdemo.model.Post
-import com.iamsdt.firebasechatdemo.utility.ConstantUtils
+import com.iamsdt.firebasechatdemo.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(),
-        NavigationView.OnNavigationItemSelectedListener,
-        ClickListener {
-    private var database: FirebaseDatabase? = null
+        NavigationView.OnNavigationItemSelectedListener{
 
-    private var dbRef: DatabaseReference? = null
     private var mAdapter: MainAdapter? = null
 
-    private var user: FirebaseUser? = null
+    private var dbRef: DatabaseReference? = null
+
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        database = FirebaseDatabase.getInstance()
-        dbRef = database?.reference
+        dbRef = FirebaseDatabase.getInstance().reference
 
         val manager = LinearLayoutManager(this)
-
         mainRcv.layoutManager = manager
-
-        mAdapter = MainAdapter(this)
-
+        mAdapter = MainAdapter(dbRef!!)
         mainRcv.adapter = mAdapter
-        user = MyApplication().get(this).mAuth?.currentUser!!
 
-        getData(user!!)
+        val user = MyApplication().get(this).mAuth?.currentUser
 
-        main_btn.setOnClickListener({
-            saveData(user!!)
+        viewModel.getPostList(user)?.observe(this, Observer { allData ->
+            if (allData != null && allData.isNotEmpty()) {
+                mAdapter?.swapData(allData)
+                Timber.w(allData.size.toString())
+            }
+        })
+
+        main_card.setOnClickListener({
+            startActivity(Intent(this, CreatePostActivity::class.java))
         })
 
         val toggle = ActionBarDrawerToggle(
@@ -63,61 +64,6 @@ class MainActivity : AppCompatActivity(),
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-    }
-
-
-    private fun saveData(user: FirebaseUser) {
-        val text: String = mainEt.text.toString()
-        val date = SimpleDateFormat("MMM dd, hh:mm a",
-                Locale.ENGLISH).format(Date())
-
-        //data pattern May 9, 15:14pm
-        val post = Post(text, date)
-
-        dbRef?.child(user.uid)?.child(ConstantUtils.post)?.push()?.
-                setValue(post)?.addOnCompleteListener({ task ->
-            if (task.isSuccessful) {
-                mainEt.setText("")
-                mainEt.clearFocus()
-            }
-        })
-    }
-
-    private fun getData(user: FirebaseUser) {
-
-        val array = ArrayList<Post>()
-
-        dbRef?.child(user.uid)?.child(ConstantUtils.post)?.
-                addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {
-                        //nothing to do
-                    }
-
-                    override fun onDataChange(dataSnapshot: DataSnapshot?) {
-
-                        //clear all the data that saved previously
-                        array.clear()
-
-                        Timber.i("Data change called")
-
-                        for (snapShot in dataSnapshot!!.children) {
-
-                            if (!snapShot.exists()) {
-                                continue
-                            }
-
-                            val data = snapShot.getValue(Post::class.java)
-                            val key = snapShot.key
-                            Timber.i(key)
-                            val post = Post(data!!.content, data.date, key)
-                            //add new post data
-                            array.add(post)
-                            Timber.i(post.toString())
-                        }
-                    }
-                })
-
-        mAdapter?.swapData(array)
     }
 
     override fun onBackPressed() {
@@ -171,17 +117,4 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onItemClick(post: Post?) {
-        val newPost = Post("New Content", post!!.date)
-        dbRef?.child(user?.uid)?.child(ConstantUtils.post)
-                ?.child(post.key)?.setValue(newPost)
-                ?.addOnCompleteListener({ task ->
-                    if (task.isSuccessful) {
-                        Timber.i("update")
-                    } else {
-                        Timber.e(task.exception)
-                    }
-                })
-
-    }
 }

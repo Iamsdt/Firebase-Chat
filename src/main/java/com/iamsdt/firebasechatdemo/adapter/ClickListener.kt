@@ -1,6 +1,5 @@
 package com.iamsdt.firebasechatdemo.adapter
 
-import android.widget.AdapterView
 import com.iamsdt.firebasechatdemo.model.Post
 
 /**

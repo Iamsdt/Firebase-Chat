@@ -18,7 +18,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/main_profilePic"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginStart="8dp"
@@ -29,7 +29,7 @@
             android:layout_marginLeft="8dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/main_profileName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -37,13 +37,13 @@
             android:layout_marginTop="3dp"
             android:padding="5dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintEnd_toStartOf="@+id/mainBookmarkBtn"
+            app:layout_constraintStart_toEndOf="@+id/main_profilePic"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Shudipto Trafder" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/main_postDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -53,36 +53,36 @@
             android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/mainBookmarkBtn"
+            app:layout_constraintStart_toEndOf="@+id/main_profilePic"
+            app:layout_constraintTop_toBottomOf="@+id/main_profileName"
             tools:text="07 may 2017" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/mainBookmarkBtn"
             android:layout_width="32dp"
             android:layout_height="42dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintBottom_toBottomOf="@+id/main_postDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/main_post_img"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/main_profilePic"
             app:srcCompat="@drawable/ic_user_pic" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/main_post_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
@@ -90,7 +90,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.551"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/main_post_img" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -102,12 +102,12 @@
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+            app:layout_constraintTop_toBottomOf="@+id/main_post_text">
 
             <!--//fixme 12/10/2017 add red color -->
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/main_post_love_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -115,7 +115,7 @@
                 tools:text="225 love" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/main_post_share_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="1dp"
-            android:weightSum="4.5"
+            android:weightSum="3"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="5dp"
             app:layout_goneMarginEnd="5dp"
@@ -148,28 +148,12 @@
                 app:srcCompat="@drawable/ic_like" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/main_post_love_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:text="@string/loveTxt" />
-
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight=".5"
-                app:srcCompat="@drawable/ic_comment" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1.3"
-                android:text="@string/commentTxt" />
 
             <ImageView
                 android:id="@+id/imageView10"
@@ -180,7 +164,7 @@
                 app:srcCompat="@drawable/ic_share" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/main_post_share_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

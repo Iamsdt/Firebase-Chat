@@ -4,31 +4,76 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.database.DatabaseReference
 import com.iamsdt.firebasechatdemo.R
 import com.iamsdt.firebasechatdemo.model.Post
-import kotlinx.android.synthetic.main.dummy_item_view.view.*
+import com.iamsdt.firebasechatdemo.utility.ConstantUtils
+import kotlinx.android.synthetic.main.main_list_item.view.*
 import timber.log.Timber
 
 /**
  * Created by Shudipto Trafder on 12/14/2017.
  * at 7:48 PM
  */
-class MainAdapter(clickListener: ClickListener):
-        RecyclerView.Adapter<MainAdapter.MyViewHolder>() {
+class MainAdapter(private val databaseReference: DatabaseReference):
+        RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 
-    private var dataList: ArrayList<Post>? = null
-
-    private var mClickListener:ClickListener ?= null
+    private var dataList: List<Post>? = null
 
     init {
         dataList = ArrayList()
-        mClickListener = clickListener
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder?, position: Int) {
         val post = dataList!![position]
-        viewHolder?.textView?.text = post.content
+
+        //profile
+        viewHolder?.profileName?.text = post.userName
+        viewHolder?.postDate?.text = post.date
+
+        //post
+        viewHolder?.postText?.text = post.content
+        viewHolder?.shareCount?.text = post.shareCount.toString()
+        viewHolder?.loveCount?.text = post.loveCount.toString()
+
+        if (post.userId.isEmpty()){
+            viewHolder?.loveBtn?.setOnClickListener({
+                val loveCount = post.loveCount + 1
+
+                val newPost = Post(post.content,post.date,post.postMedia,post.key,
+                        post.userId,post.userName,post.userProfilePic,loveCount,post.shareCount)
+
+                databaseReference.child(post.userId)?.child(ConstantUtils.post)
+                        ?.child(post.key)?.setValue(newPost)
+                        ?.addOnCompleteListener({ task ->
+                            if (task.isSuccessful) {
+                                Timber.i("update")
+                            } else {
+                                Timber.e(task.exception)
+                            }
+                        })
+            })
+
+            viewHolder?.shareBtn?.setOnClickListener({
+                val shareCount = post.shareCount + 1
+
+                val newPost = Post(post.content,post.date,post.postMedia,post.key,
+                        post.userId,post.userName,post.userProfilePic,post.loveCount,shareCount)
+
+                databaseReference.child(post.userId)?.child(ConstantUtils.post)
+                        ?.child(post.key)?.setValue(newPost)
+                        ?.addOnCompleteListener({ task ->
+                            if (task.isSuccessful) {
+                                Timber.i("update")
+                            } else {
+                                Timber.e(task.exception)
+                            }
+                        })
+            })
+        }
+
         Timber.i(post.content)
     }
 
@@ -39,11 +84,11 @@ class MainAdapter(clickListener: ClickListener):
     override fun onCreateViewHolder(parent: ViewGroup?, ViewType: Int):
             MyViewHolder {
         val view: View = LayoutInflater.from(parent?.context)
-                .inflate(R.layout.dummy_item_view, parent, false)
+                .inflate(R.layout.main_list_item, parent, false)
         return MyViewHolder(view)
     }
 
-    fun swapData(list: ArrayList<Post>) {
+    fun swapData(list: List<Post>) {
 
         dataList = list
 
@@ -56,17 +101,22 @@ class MainAdapter(clickListener: ClickListener):
     }
 
     inner class MyViewHolder(itemView: View) :
-            RecyclerView.ViewHolder(itemView),View.OnClickListener {
+            RecyclerView.ViewHolder(itemView){
 
-        val textView:TextView = itemView.dummyItemTv
+        val pofilePic:ImageView = itemView.main_profilePic
+        val profileName:TextView = itemView.main_profileName
+        val postDate:TextView = itemView.main_postDate
 
-        init {
-            textView.setOnClickListener(this)
-        }
+        //post
+        val postImage:ImageView = itemView.main_post_img
+        val postText:TextView = itemView.main_post_text
 
-        override fun onClick(v: View?) {
-            val post = dataList?.get(adapterPosition)
-            mClickListener?.onItemClick(post)
-        }
+        //count
+        val loveCount:TextView = itemView.main_post_love_count
+        val shareCount:TextView = itemView.main_post_share_count
+
+        //btn
+        val loveBtn:TextView = itemView.main_post_love_btn
+        val shareBtn:TextView = itemView.main_post_share_btn
     }
 }

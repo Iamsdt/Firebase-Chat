@@ -4,14 +4,14 @@
     package="com.iamsdt.firebasechatdemo">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyTheme"
-        tools:replace="android:theme"
-        android:name=".MyApplication">
+        tools:replace="android:theme">
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -25,7 +25,17 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/MyTheme.NoActionBar"/>
+            android:theme="@style/MyTheme.NoActionBar" />
+        <activity
+            android:name=".CreatePostActivity"
+            android:label="@string/title_activity_create_post"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/MyTheme.NoActionBar"
+            tools:targetApi="jelly_bean">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.iamsdt.firebasechatdemo.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
