@@ -2,6 +2,7 @@ package com.iamsdt.firebasechatdemo
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
+import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
 import com.iamsdt.firebasechatdemo.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -47,7 +49,6 @@ class MainActivity : AppCompatActivity(),
         mAdapter = MainAdapter(dbRef!!)
         mainRcv.adapter = mAdapter
 
-        MyApplication().get(this).mAuth?.currentUser
 
         viewModel.getPostList(mAuth?.currentUser)?.observe(this, Observer { allData ->
             if (allData != null && allData.isNotEmpty()) {
@@ -93,6 +94,8 @@ class MainActivity : AppCompatActivity(),
 
             R.id.action_logOut -> {
                 mAuth?.signOut()
+                FirebaseAuthUtil(mAuth!!).removeUserFromSp(this)
+                startActivity(Intent(this@MainActivity,LoginActivity::class.java))
                 return true
             }
 

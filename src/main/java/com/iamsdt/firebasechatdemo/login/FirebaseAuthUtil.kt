@@ -122,4 +122,12 @@ class FirebaseAuthUtil(private val mAuth:FirebaseAuth){
         editor.putString(userPassKey,newPass)
         editor.apply()
     }
+
+    fun removeUserFromSp(context: Context){
+        val sp = context.getSharedPreferences(userKey, Context.MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.remove(userPassKey)
+        editor.remove(userEmailKey)
+        editor.apply()
+    }
 }
