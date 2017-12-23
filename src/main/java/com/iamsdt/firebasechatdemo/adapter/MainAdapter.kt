@@ -22,10 +22,6 @@ class MainAdapter(private val databaseReference: DatabaseReference):
 
     private var dataList: List<Post>? = null
 
-    init {
-        dataList = ArrayList()
-    }
-
     override fun onBindViewHolder(viewHolder: MyViewHolder?, position: Int) {
         val post = dataList!![position]
 
@@ -42,9 +38,13 @@ class MainAdapter(private val databaseReference: DatabaseReference):
             viewHolder?.postImage?.visibility = View.GONE
         }
         
-        if (post.userId.isEmpty()){
+        if (post.userId.isNotEmpty()){
+
+            var loveCount = post.loveCount
+            var shareCount = post.shareCount
+
             viewHolder?.loveBtn?.setOnClickListener({
-                val loveCount = post.loveCount + 1
+               loveCount += 1
 
                 val newPost = Post(post.content,post.date,post.postMedia,post.key,
                         post.userId,post.userName,post.userProfilePic,loveCount,post.shareCount)
@@ -53,7 +53,7 @@ class MainAdapter(private val databaseReference: DatabaseReference):
                         ?.child(post.key)?.setValue(newPost)
                         ?.addOnCompleteListener({ task ->
                             if (task.isSuccessful) {
-                                Timber.i("update")
+                                Timber.i("update $loveCount")
                             } else {
                                 Timber.e(task.exception)
                             }
@@ -61,7 +61,8 @@ class MainAdapter(private val databaseReference: DatabaseReference):
             })
 
             viewHolder?.shareBtn?.setOnClickListener({
-                val shareCount = post.shareCount + 1
+
+                shareCount += 1
 
                 val newPost = Post(post.content,post.date,post.postMedia,post.key,
                         post.userId,post.userName,post.userProfilePic,post.loveCount,shareCount)
@@ -70,7 +71,7 @@ class MainAdapter(private val databaseReference: DatabaseReference):
                         ?.child(post.key)?.setValue(newPost)
                         ?.addOnCompleteListener({ task ->
                             if (task.isSuccessful) {
-                                Timber.i("update")
+                                Timber.i("update + $shareCount")
                             } else {
                                 Timber.e(task.exception)
                             }

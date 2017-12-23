@@ -19,8 +19,6 @@ class MainViewModel(application: Application):AndroidViewModel(application){
     private var postList: MutableLiveData<List<Post>>? = null
 
     private var dbRef: DatabaseReference? = null
-    private var user: FirebaseUser? = null
-
 
     init {
         dbRef = FirebaseDatabase.getInstance().reference
@@ -41,9 +39,11 @@ class MainViewModel(application: Application):AndroidViewModel(application){
 
     private fun getAllData(user: FirebaseUser) {
 
-        AsyncTask.execute({
-
+        if (postList == null){
             postList = MutableLiveData()
+        }
+
+        AsyncTask.execute({
 
             dbRef?.child(user.uid)?.child(ConstantUtils.post)?.
                     addValueEventListener(object : ValueEventListener {
@@ -79,7 +79,7 @@ class MainViewModel(application: Application):AndroidViewModel(application){
                             }
 
                             if (array.isNotEmpty()) {
-                                postList?.postValue(array)
+                                postList!!.postValue(array)
                             }
 
                         }
