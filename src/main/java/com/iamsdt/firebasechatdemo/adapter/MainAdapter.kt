@@ -38,6 +38,10 @@ class MainAdapter(private val databaseReference: DatabaseReference):
         viewHolder?.shareCount?.text = post.shareCount.toString()
         viewHolder?.loveCount?.text = post.loveCount.toString()
 
+        if (post.postMedia.isEmpty()){
+            viewHolder?.postImage?.visibility = View.GONE
+        }
+        
         if (post.userId.isEmpty()){
             viewHolder?.loveBtn?.setOnClickListener({
                 val loveCount = post.loveCount + 1
