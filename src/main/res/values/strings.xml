@@ -16,4 +16,7 @@
     <string name="socialLogin">Or, Sign in using</string>
     <string name="write_something">write something</string>
     <string name="title_activity_create_post">CreatePostActivity</string>
+
+    <!--log -->
+    <string name="action_logOut">Logout</string>
 </resources>

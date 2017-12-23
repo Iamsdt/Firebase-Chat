@@ -3,6 +3,8 @@ package com.iamsdt.firebasechatdemo
 import android.app.Activity
 import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import timber.log.Timber
 
 /**
@@ -12,6 +14,8 @@ import timber.log.Timber
 class MyApplication:Application(){
 
     var mAuth:FirebaseAuth ?= null
+    var dbRef: DatabaseReference? = null
+
 
     override fun onCreate() {
         super.onCreate()
@@ -24,6 +28,7 @@ class MyApplication:Application(){
         }
 
         mAuth = FirebaseAuth.getInstance()
+        dbRef = FirebaseDatabase.getInstance().reference
     }
 
     fun get(activity: Activity):MyApplication = activity.application as MyApplication

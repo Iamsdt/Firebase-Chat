@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity(),
     private var mAdapter: MainAdapter? = null
 
     private var dbRef: DatabaseReference? = null
+    private var mAuth:FirebaseAuth ?= null
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -36,16 +39,17 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        dbRef = FirebaseDatabase.getInstance().reference
+        dbRef = MyApplication().get(this).dbRef
+        mAuth = MyApplication().get(this).mAuth
 
         val manager = LinearLayoutManager(this)
         mainRcv.layoutManager = manager
         mAdapter = MainAdapter(dbRef!!)
         mainRcv.adapter = mAdapter
 
-        val user = MyApplication().get(this).mAuth?.currentUser
+        MyApplication().get(this).mAuth?.currentUser
 
-        viewModel.getPostList(user)?.observe(this, Observer { allData ->
+        viewModel.getPostList(mAuth?.currentUser)?.observe(this, Observer { allData ->
             if (allData != null && allData.isNotEmpty()) {
                 mAdapter?.swapData(allData)
                 Timber.w(allData.size.toString())
@@ -86,6 +90,12 @@ class MainActivity : AppCompatActivity(),
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
+
+            R.id.action_logOut -> {
+                mAuth?.signOut()
+                return true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
