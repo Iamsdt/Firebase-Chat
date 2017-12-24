@@ -17,6 +17,11 @@
     <string name="write_something">write something</string>
     <string name="title_activity_create_post">CreatePostActivity</string>
 
-    <!--log -->
+    <!--menu-->
     <string name="action_logOut">Logout</string>
+    <string name="messenger">messenger</string>
+    <string name="title_activity_messenger">MessengerActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_friend_search">FriendSearchActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>

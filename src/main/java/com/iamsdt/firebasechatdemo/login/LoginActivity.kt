@@ -1,11 +1,11 @@
-package com.iamsdt.firebasechatdemo
+package com.iamsdt.firebasechatdemo.login
 
 import am.appwise.components.ni.NoInternetDialog
 import am.appwise.components.ni.NoInternetUtils
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
-import com.iamsdt.firebasechatdemo.login.SignupFragment
+import com.iamsdt.firebasechatdemo.MyApplication
+import com.iamsdt.firebasechatdemo.R
 import kotlinx.android.synthetic.main.content_login.*
 
 

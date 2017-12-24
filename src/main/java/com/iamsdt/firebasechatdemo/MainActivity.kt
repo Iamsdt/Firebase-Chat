@@ -2,30 +2,25 @@ package com.iamsdt.firebasechatdemo
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.NavigationView
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
 import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
+import com.iamsdt.firebasechatdemo.login.LoginActivity
 import com.iamsdt.firebasechatdemo.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(),
-        NavigationView.OnNavigationItemSelectedListener{
+class MainActivity : AppCompatActivity(){
 
     private var mAdapter: MainAdapter? = null
 
@@ -39,10 +34,16 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(main_toolbar)
 
         dbRef = MyApplication().get(this).dbRef
+
         mAuth = MyApplication().get(this).mAuth
+
+        val build = UserProfileChangeRequest.Builder()
+                .setDisplayName("Name")
+                .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                .build()
 
         val manager = LinearLayoutManager(this)
         mainRcv.layoutManager = manager
@@ -60,23 +61,6 @@ class MainActivity : AppCompatActivity(),
         main_card.setOnClickListener({
             startActivity(Intent(this, CreatePostActivity::class.java))
         })
-
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        nav_view.setNavigationItemSelectedListener(this)
-    }
-
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,39 +79,11 @@ class MainActivity : AppCompatActivity(),
             R.id.action_logOut -> {
                 mAuth?.signOut()
                 FirebaseAuthUtil(mAuth!!).removeUserFromSp(this)
-                startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 return true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }
-        }
-
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
 }

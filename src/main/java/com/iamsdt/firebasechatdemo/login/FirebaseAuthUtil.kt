@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import com.google.firebase.auth.FirebaseAuth
 import com.iamsdt.firebasechatdemo.BuildConfig
-import com.iamsdt.firebasechatdemo.LoginActivity
 import com.iamsdt.firebasechatdemo.MainActivity
 import com.mobapphome.mahencryptorlib.MAHEncryptor
 import timber.log.Timber
