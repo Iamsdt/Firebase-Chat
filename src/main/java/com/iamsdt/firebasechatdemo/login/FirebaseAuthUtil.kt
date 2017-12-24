@@ -17,7 +17,6 @@ import timber.log.Timber
 
 class FirebaseAuthUtil(private val mAuth:FirebaseAuth){
 
-
     private val userKey = "FirebaseUser"
     private val userEmailKey = "email"
     private val userPassKey = "pass"
