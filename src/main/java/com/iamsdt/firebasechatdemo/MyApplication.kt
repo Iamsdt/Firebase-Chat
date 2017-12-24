@@ -5,7 +5,12 @@ import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.okhttp.Cache
+import com.squareup.okhttp.OkHttpClient
+import com.squareup.picasso.OkHttpDownloader
+import com.squareup.picasso.Picasso
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by Shudipto Trafder on 12/14/2017.
@@ -29,6 +34,7 @@ class MyApplication:Application(){
 
         mAuth = FirebaseAuth.getInstance()
         dbRef = FirebaseDatabase.getInstance().reference
+
     }
 
     fun get(activity: Activity):MyApplication = activity.application as MyApplication

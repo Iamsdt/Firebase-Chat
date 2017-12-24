@@ -37,7 +37,9 @@ class MainAdapter(private val databaseReference: DatabaseReference):
         if (post.postMedia.isEmpty()){
             viewHolder?.postImage?.visibility = View.GONE
         }
-        
+
+
+        //code for love btn and share btn
         if (post.userId.isNotEmpty()){
 
             var loveCount = post.loveCount

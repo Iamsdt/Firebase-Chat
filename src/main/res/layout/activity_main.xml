@@ -23,6 +23,7 @@
 
     <include layout="@layout/content_main" />
 
+    <!--//fixme 12/25/2017 replace icon -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/main_fab"
         android:layout_width="wrap_content"
