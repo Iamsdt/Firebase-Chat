@@ -1,7 +1,7 @@
 package com.iamsdt.firebasechatdemo.injection.module
 
 import android.content.Context
-import com.iamsdt.firebasechatdemo.injection.scopes.AppilcationScope
+import com.iamsdt.firebasechatdemo.injection.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
 
@@ -15,6 +15,6 @@ class ContextModule(context:Context){
     private val mContext = context
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getContext(): Context = mContext
 }

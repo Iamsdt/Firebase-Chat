@@ -23,11 +23,11 @@ class CreatePostActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         dbRef = FirebaseDatabase.getInstance().reference
-        val user = MyApplication().get(this).mAuth?.currentUser
-
-        create_post_btn.setOnClickListener({
-            saveData(user!!)
-        })
+//        val user = Fi
+//
+//        create_post_btn.setOnClickListener({
+//            saveData(user)
+//        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

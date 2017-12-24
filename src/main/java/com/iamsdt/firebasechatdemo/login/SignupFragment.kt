@@ -24,7 +24,7 @@ class SignupFragment:Fragment(){
 
         val view = inflater?.inflate(R.layout.signup_fragment,container,false)
 
-        val authUtil = FirebaseAuthUtil(MyApplication().get(activity).mAuth!!)
+        //val authUtil = FirebaseAuthUtil(MyApplication().get(activity).mAuth!!)
 
         val btn = view!!.findViewById<Button>(R.id.sUp_btn)
 
@@ -33,7 +33,7 @@ class SignupFragment:Fragment(){
             val pass = sUp_pass.editText?.text.toString()
             //fixme 12/13/2017 validate before create
             if (NoInternetUtils.isConnectedToInternet(context)){
-                authUtil.createNewAccount(context,email,pass)
+                //authUtil.createNewAccount(context,email,pass)
             }else{
                 NoInternetDialog.Builder(this).build().showDialog()
             }

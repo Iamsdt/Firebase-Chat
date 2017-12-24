@@ -37,13 +37,9 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar)
 
-        dbRef = MyApplication().get(this).dbRef
-
-        mAuth = MyApplication().get(this).mAuth
-
         val manager = LinearLayoutManager(this)
         mainRcv.layoutManager = manager
-        mAdapter = MainAdapter(dbRef!!)
+        //mAdapter = MainAdapter(dbRef!!)
         mainRcv.adapter = mAdapter
 
 

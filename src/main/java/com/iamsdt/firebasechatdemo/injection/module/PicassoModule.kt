@@ -1,7 +1,7 @@
 package com.iamsdt.firebasechatdemo.injection.module
 
 import android.content.Context
-import com.iamsdt.firebasechatdemo.injection.scopes.AppilcationScope
+import com.iamsdt.firebasechatdemo.injection.scopes.ApplicationScope
 import com.squareup.okhttp.Cache
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.picasso.Downloader
@@ -21,18 +21,18 @@ import java.util.concurrent.TimeUnit
 class PicassoModule{
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getPicasso(context: Context,downloader: Downloader):Picasso = Picasso.Builder(context)
             .downloader(downloader)
             .build()
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getDownloader(client:OkHttpClient):Downloader = OkHttpDownloader(client)
 
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getClient(cache:Cache):OkHttpClient{
         val client = OkHttpClient()
         client.cache = cache
@@ -42,10 +42,10 @@ class PicassoModule{
     }
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getCache(file: File): Cache = Cache(file, 10 * 1024 * 1024)
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getFile(context: Context): File = File(context.cacheDir, "okHttp")
 }

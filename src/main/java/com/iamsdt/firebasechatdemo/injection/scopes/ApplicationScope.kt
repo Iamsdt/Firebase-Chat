@@ -7,4 +7,4 @@ import javax.inject.Scope
  * at 12:38 AM
  */
 @Scope
-annotation class AppilcationScope
+annotation class ApplicationScope

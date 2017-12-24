@@ -2,7 +2,7 @@ package com.iamsdt.firebasechatdemo.injection.module
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.iamsdt.firebasechatdemo.injection.scopes.AppilcationScope
+import com.iamsdt.firebasechatdemo.injection.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
 
@@ -14,10 +14,10 @@ import dagger.Provides
 class AuthModule{
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getUser(mAuth:FirebaseAuth):FirebaseUser = mAuth.currentUser!!
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getAuth():FirebaseAuth = FirebaseAuth.getInstance()
 }

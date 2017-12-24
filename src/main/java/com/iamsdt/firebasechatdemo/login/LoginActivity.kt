@@ -18,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        authUtil = FirebaseAuthUtil(MyApplication().get(this).mAuth!!)
+        //authUtil = FirebaseAuthUtil(MyApplication().get(this).mAuth!!)
         dialog = NoInternetDialog.Builder(this).build()
 
         val state = NoInternetUtils.isConnectedToInternet(this@LoginActivity)

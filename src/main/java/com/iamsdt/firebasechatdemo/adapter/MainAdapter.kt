@@ -1,5 +1,6 @@
 package com.iamsdt.firebasechatdemo.adapter
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.database.DatabaseReference
+import com.iamsdt.firebasechatdemo.MainActivity
 import com.iamsdt.firebasechatdemo.R
 import com.iamsdt.firebasechatdemo.model.Post
 import com.iamsdt.firebasechatdemo.utility.ConstantUtils
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.main_list_item.view.*
 import timber.log.Timber
 
@@ -17,10 +20,17 @@ import timber.log.Timber
  * Created by Shudipto Trafder on 12/14/2017.
  * at 7:48 PM
  */
-class MainAdapter(private val databaseReference: DatabaseReference):
+class MainAdapter(private val databaseReference: DatabaseReference,
+                  picasso: Picasso,mainActivity: MainActivity):
         RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 
     private var dataList: List<Post>? = null
+
+    private var mContext:Context ?= null
+
+    init {
+        mContext = mainActivity
+    }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder?, position: Int) {
         val post = dataList!![position]

@@ -2,7 +2,7 @@ package com.iamsdt.firebasechatdemo.injection.module
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.iamsdt.firebasechatdemo.injection.scopes.AppilcationScope
+import com.iamsdt.firebasechatdemo.injection.scopes.ApplicationScope
 import dagger.Module
 import dagger.Provides
 
@@ -15,11 +15,11 @@ import dagger.Provides
 class DBRefModule{
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getDBref(database:FirebaseDatabase):DatabaseReference
             = database.reference
 
     @Provides
-    @AppilcationScope
+    @ApplicationScope
     fun getDB():FirebaseDatabase = FirebaseDatabase.getInstance()
 }

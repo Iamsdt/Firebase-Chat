@@ -2,15 +2,10 @@ package com.iamsdt.firebasechatdemo
 
 import android.app.Activity
 import android.app.Application
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.squareup.okhttp.Cache
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.picasso.OkHttpDownloader
-import com.squareup.picasso.Picasso
+import com.iamsdt.firebasechatdemo.injection.ApplicationComponent
+import com.iamsdt.firebasechatdemo.injection.DaggerApplicationComponent
+import com.iamsdt.firebasechatdemo.injection.module.ContextModule
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Shudipto Trafder on 12/14/2017.
@@ -18,8 +13,8 @@ import java.util.concurrent.TimeUnit
  */
 class MyApplication:Application(){
 
-    var mAuth:FirebaseAuth ?= null
-    var dbRef: DatabaseReference? = null
+
+    var dagger:ApplicationComponent ?= null
 
 
     override fun onCreate() {
@@ -32,10 +27,14 @@ class MyApplication:Application(){
             Timber.plant(Timber.asTree())
         }
 
-        mAuth = FirebaseAuth.getInstance()
-        dbRef = FirebaseDatabase.getInstance().reference
+
+        dagger = DaggerApplicationComponent.builder()
+                .contextModule(ContextModule(this))
+                .build()
 
     }
+
+    fun getComponent() = dagger
 
     fun get(activity: Activity):MyApplication = activity.application as MyApplication
 }
