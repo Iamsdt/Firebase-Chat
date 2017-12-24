@@ -10,11 +10,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.auth.FirebaseUser
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
-import com.iamsdt.firebasechatdemo.injection.DaggerMainActivityComponent
-import com.iamsdt.firebasechatdemo.injection.MainActivityComponent
-import com.iamsdt.firebasechatdemo.injection.module.MainActivityModule
+import com.iamsdt.firebasechatdemo.injection.DaggerMActivityComponent
 import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
 import com.iamsdt.firebasechatdemo.login.LoginActivity
 import com.iamsdt.firebasechatdemo.messenger.MessengerActivity
@@ -22,14 +20,16 @@ import com.iamsdt.firebasechatdemo.viewModel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(){
 
-    private var mAdapter: MainAdapter? = null
+    @Inject lateinit  var mAuth:FirebaseAuth
+    @Inject lateinit  var user:FirebaseUser
 
-    private var dbRef: DatabaseReference? = null
-    private var mAuth:FirebaseAuth ?= null
+    @Inject lateinit var mAdapter: MainAdapter
+
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -44,14 +44,17 @@ class MainActivity : AppCompatActivity(){
         mainRcv.layoutManager = manager
 
 
+        val component = DaggerMActivityComponent.builder()
+                .applicationComponent(MyApplication().get(this).getComponent())
+                .build()
 
-        //mAdapter = MainAdapter(dbRef!!)
+        component.mainActivity(this)
+
         mainRcv.adapter = mAdapter
 
-
-        viewModel.getPostList(mAuth?.currentUser)?.observe(this, Observer { allData ->
+        viewModel.getPostList(user)?.observe(this, Observer { allData ->
             if (allData != null && allData.isNotEmpty()) {
-                mAdapter?.swapData(allData)
+                mAdapter.swapData(allData)
                 Timber.w(allData.size.toString())
             }
         })
@@ -91,8 +94,8 @@ class MainActivity : AppCompatActivity(){
 
             //todo 12/24/2017 move to settings
             R.id.action_logOut -> {
-                mAuth?.signOut()
-                FirebaseAuthUtil(mAuth!!).removeUserFromSp(this)
+                mAuth.signOut()
+                FirebaseAuthUtil(mAuth).removeUserFromSp(this)
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 return true
             }

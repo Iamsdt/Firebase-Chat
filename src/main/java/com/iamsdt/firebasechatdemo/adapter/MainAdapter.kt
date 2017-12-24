@@ -21,7 +21,7 @@ import timber.log.Timber
  * at 7:48 PM
  */
 class MainAdapter(private val databaseReference: DatabaseReference,
-                  picasso: Picasso,mainActivity: MainActivity):
+                  picasso: Picasso,context: Context):
         RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 
     private var dataList: List<Post>? = null
@@ -29,7 +29,7 @@ class MainAdapter(private val databaseReference: DatabaseReference,
     private var mContext:Context ?= null
 
     init {
-        mContext = mainActivity
+        mContext = context
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder?, position: Int) {
