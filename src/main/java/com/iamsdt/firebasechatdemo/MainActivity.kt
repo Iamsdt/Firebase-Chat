@@ -12,6 +12,9 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
+import com.iamsdt.firebasechatdemo.injection.DaggerMainActivityComponent
+import com.iamsdt.firebasechatdemo.injection.MainActivityComponent
+import com.iamsdt.firebasechatdemo.injection.module.MainActivityModule
 import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
 import com.iamsdt.firebasechatdemo.login.LoginActivity
 import com.iamsdt.firebasechatdemo.messenger.MessengerActivity
@@ -39,6 +42,9 @@ class MainActivity : AppCompatActivity(){
 
         val manager = LinearLayoutManager(this)
         mainRcv.layoutManager = manager
+
+
+
         //mAdapter = MainAdapter(dbRef!!)
         mainRcv.adapter = mAdapter
 

@@ -14,7 +14,7 @@ import dagger.Provides
  */
 
 @Module(includes = arrayOf(ContextModule::class,DBRefModule::class))
-class MainActivityModule(private val activity: MainActivity){
+class MActivityModule(private val activity: MainActivity){
 
     @Provides
     @ApplicationScope

@@ -12,8 +12,8 @@ import dagger.Component
 
 @ApplicationScope
 @Component(modules = arrayOf(MainActivityModule::class),
-        dependencies = arrayOf(MainActivityComponent::class))
-interface MainActivityComponent {
+        dependencies = arrayOf(ApplicationComponent::class))
+interface MActivityComponent {
 
     fun mainActivity(mainActivity: MainActivity)
 }
