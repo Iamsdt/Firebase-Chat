@@ -2,7 +2,7 @@ package com.iamsdt.firebasechatdemo.injection
 
 import com.iamsdt.firebasechatdemo.MainActivity
 import com.iamsdt.firebasechatdemo.injection.module.MActivityModule
-import com.iamsdt.firebasechatdemo.injection.scopes.MActivityScope
+import com.iamsdt.firebasechatdemo.injection.scopes.ApplicationScope
 import dagger.Component
 
 /**
@@ -10,9 +10,9 @@ import dagger.Component
  * at 12:55 AM
  */
 
-@MActivityScope
-@Component(modules = arrayOf(MActivityModule::class),
-        dependencies = arrayOf(ApplicationComponent::class))
+@ApplicationScope
+@Component(modules = [(MActivityModule::class)],
+        dependencies = [(ApplicationComponent::class)])
 interface MActivityComponent {
     fun mainActivity(mainActivity: MainActivity)
 }

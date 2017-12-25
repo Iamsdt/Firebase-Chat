@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  * at 12:24 AM
  */
 
-@Module(includes = arrayOf(ContextModule::class))
+@Module(includes = [(ContextModule::class)])
 class PicassoModule{
 
     @Provides

@@ -15,8 +15,8 @@ import dagger.Component
  * at 4:48 PM
  */
 @ApplicationScope
-@Component(modules = arrayOf(AuthModule::class,DBRefModule::class,
-        PicassoModule::class))
+@Component(modules = [AuthModule::class, DBRefModule::class,
+    PicassoModule::class])
 interface ApplicationComponent {
     val getPicasso: Picasso
 
