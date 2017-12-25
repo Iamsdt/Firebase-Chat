@@ -12,7 +12,6 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
-import com.iamsdt.firebasechatdemo.injection.DaggerMActivityComponent
 import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
 import com.iamsdt.firebasechatdemo.login.LoginActivity
 import com.iamsdt.firebasechatdemo.messenger.MessengerActivity
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 import javax.inject.Inject
-
 
 class MainActivity : AppCompatActivity(){
 
@@ -43,12 +41,6 @@ class MainActivity : AppCompatActivity(){
         val manager = LinearLayoutManager(this)
         mainRcv.layoutManager = manager
 
-
-        val component = DaggerMActivityComponent.builder()
-                .applicationComponent(MyApplication().get(this).getComponent())
-                .build()
-
-        component.mainActivity(this)
 
         mainRcv.adapter = mAdapter
 

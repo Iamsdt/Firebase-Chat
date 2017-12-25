@@ -4,7 +4,8 @@ import javax.inject.Scope
 
 /**
  * Created by Shudipto Trafder on 12/25/2017.
- * at 1:17 AM
+ * at 9:06 PM
  */
+
 @Scope
-annotation class MActivityScope
+annotation class ActivityScope
