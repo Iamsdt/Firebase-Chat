@@ -1,5 +1,6 @@
 package com.iamsdt.firebasechatdemo
 
+import am.appwise.components.ni.NoInternetDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -12,6 +13,8 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
+import com.iamsdt.firebasechatdemo.injection.DaggerActivityComponent
+import com.iamsdt.firebasechatdemo.injection.module.ActivityModule
 import com.iamsdt.firebasechatdemo.login.FirebaseAuthUtil
 import com.iamsdt.firebasechatdemo.login.LoginActivity
 import com.iamsdt.firebasechatdemo.messenger.MessengerActivity
@@ -21,27 +24,29 @@ import kotlinx.android.synthetic.main.content_main.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : BaseActivity(){
 
     @Inject lateinit  var mAuth:FirebaseAuth
     @Inject lateinit  var user:FirebaseUser
 
     @Inject lateinit var mAdapter: MainAdapter
 
+    @Inject lateinit var dialog: NoInternetDialog
 
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //component
+        getComponent().inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar)
 
         val manager = LinearLayoutManager(this)
         mainRcv.layoutManager = manager
-
-
         mainRcv.adapter = mAdapter
 
         viewModel.getPostList(user)?.observe(this, Observer { allData ->

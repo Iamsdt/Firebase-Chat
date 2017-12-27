@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.database.DatabaseReference
+import com.iamsdt.firebasechatdemo.BaseActivity
 import com.iamsdt.firebasechatdemo.MainActivity
 import com.iamsdt.firebasechatdemo.R
 import com.iamsdt.firebasechatdemo.model.Post
@@ -21,7 +22,7 @@ import timber.log.Timber
  * at 7:48 PM
  */
 class MainAdapter(private val databaseReference: DatabaseReference,
-                  picasso: Picasso,context: Context):
+                  picasso: Picasso,context: BaseActivity):
         RecyclerView.Adapter<MainAdapter.MyViewHolder>(){
 
     private var dataList: List<Post>? = null
@@ -29,7 +30,7 @@ class MainAdapter(private val databaseReference: DatabaseReference,
     private var mContext:Context ?= null
 
     init {
-        mContext = context
+        mContext = context.baseContext
     }
 
     override fun onBindViewHolder(viewHolder: MyViewHolder?, position: Int) {

@@ -2,32 +2,32 @@ package com.iamsdt.firebasechatdemo
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.iamsdt.firebasechatdemo.model.Post
 import com.iamsdt.firebasechatdemo.utility.ConstantUtils
 import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.content_create_post.*
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class CreatePostActivity : AppCompatActivity() {
+class CreatePostActivity : BaseActivity() {
 
-    private var dbRef: DatabaseReference? = null
+    @Inject lateinit var dbRef: DatabaseReference
+    @Inject lateinit var user: FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        getComponent().inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
         setSupportActionBar(toolbar)
 
-        dbRef = FirebaseDatabase.getInstance().reference
-//        val user = Fi
-//
-//        create_post_btn.setOnClickListener({
-//            saveData(user)
-//        })
+        create_post_btn.setOnClickListener({
+            saveData(user)
+        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -46,7 +46,7 @@ class CreatePostActivity : AppCompatActivity() {
 
         val post = Post(content = text,date = date,userId = user.uid)
 
-        dbRef?.child(user.uid)?.child(ConstantUtils.post)?.push()?.
+        dbRef.child(user.uid)?.child(ConstantUtils.post)?.push()?.
                 setValue(post)?.addOnCompleteListener({ task ->
             if (task.isSuccessful) {
                 finish()

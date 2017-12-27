@@ -3,37 +3,41 @@ package com.iamsdt.firebasechatdemo.login
 import am.appwise.components.ni.NoInternetDialog
 import am.appwise.components.ni.NoInternetUtils
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.iamsdt.firebasechatdemo.MyApplication
+import com.google.firebase.auth.FirebaseAuth
+import com.iamsdt.firebasechatdemo.BaseActivity
 import com.iamsdt.firebasechatdemo.R
 import kotlinx.android.synthetic.main.content_login.*
+import javax.inject.Inject
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
-    var authUtil:FirebaseAuthUtil ?= null
-    var dialog:NoInternetDialog ?= null
+    @Inject lateinit var mAuth:FirebaseAuth
+    @Inject lateinit var dialog:NoInternetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //inject
+        getComponent().inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //authUtil = FirebaseAuthUtil(MyApplication().get(this).mAuth!!)
-        dialog = NoInternetDialog.Builder(this).build()
+        val authUtil = FirebaseAuthUtil(mAuth = mAuth)
 
         val state = NoInternetUtils.isConnectedToInternet(this@LoginActivity)
 
         if (!state) {
             showNoInternetDialog()
         }else{
-            authUtil?.checkUserData(this@LoginActivity)
+            authUtil.checkUserData(this@LoginActivity)
         }
 
         login_btn.setOnClickListener {
             val email = login_email_lay.editText?.text.toString()
             val pass = login_pass_lay.editText?.text.toString()
             if (state){
-                authUtil?.login(this, email, pass)
+                authUtil.login(this, email, pass)
             }else{
                 showNoInternetDialog()
             }
@@ -52,8 +56,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showNoInternetDialog(){
-        if (!dialog!!.isShowing){
-            dialog?.show()
+        if (!dialog.isShowing){
+            dialog.show()
         }
     }
 

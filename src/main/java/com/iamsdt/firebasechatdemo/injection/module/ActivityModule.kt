@@ -1,7 +1,8 @@
 package com.iamsdt.firebasechatdemo.injection.module
 
-import android.app.Activity
+import am.appwise.components.ni.NoInternetDialog
 import com.google.firebase.database.DatabaseReference
+import com.iamsdt.firebasechatdemo.BaseActivity
 import com.iamsdt.firebasechatdemo.adapter.MainAdapter
 import com.iamsdt.firebasechatdemo.injection.scopes.ActivityScope
 import com.squareup.picasso.Picasso
@@ -14,10 +15,15 @@ import dagger.Provides
  */
 
 @Module
-class ActivityModule(private val activity:Activity){
+class ActivityModule(private val activity:BaseActivity){
 
     @Provides
     @ActivityScope
     fun getAdapter(dbRef:DatabaseReference,picasso: Picasso):MainAdapter
             = MainAdapter(dbRef,picasso,activity)
+
+    @Provides
+    @ActivityScope
+    fun getNoInternetDialog():NoInternetDialog
+            = NoInternetDialog.Builder(activity.baseContext).build()
 }
